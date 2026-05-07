@@ -1,0 +1,4 @@
+../Src/battery_monitor.c:21:6:BatteryMonitor_Init	16	static
+../Src/battery_monitor.c:27:6:BatteryMonitor_Update	8	static
+../Src/battery_monitor.c:52:10:BatteryMonitor_GetRawValue	4	static
+../Src/battery_monitor.c:57:7:BatteryMonitor_GetAdcVoltage	4	static
