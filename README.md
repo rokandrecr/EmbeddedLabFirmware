@@ -2,7 +2,7 @@
 
 This project contains the firmware for an Embedded Lab battery balancing system using the **STM32F407G-DISC1** development board.
 
-The final goal of the project is to implement a **Single Switched Capacitor battery balancing circuit**, where the STM32 monitors battery cell voltages and controls the switching sequence needed to transfer charge between cells.
+The final goal of the project is to implement a **C2C Balancing circuit**, where the STM32 monitors battery cell voltages and controls the switching sequence needed to transfer charge between cells.
 
 At this stage, the project is focused on the basic firmware bring-up:
 
