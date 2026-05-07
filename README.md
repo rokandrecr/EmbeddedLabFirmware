@@ -55,6 +55,7 @@ ADC input → raw ADC value → converted voltage → simple firmware decision
 ---
 
 ## Project Structure
+```text
 EmbeddedLabFirmware
 ├── Inc
 │   ├── main.h
