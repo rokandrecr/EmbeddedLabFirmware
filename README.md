@@ -47,8 +47,6 @@ Current implemented features:
 - Initial `battery_monitor` module planned/created for ADC reading.
 
 Current test objective:
-
-```text
 ADC input → raw ADC value → converted voltage → simple firmware decision
 
 
