@@ -1,0 +1,15 @@
+# STM32CubeIDE build output
+Debug/
+Release/
+
+# Object and dependency files
+*.o
+*.d
+*.elf
+*.map
+*.list
+*.su
+*.cyclo
+
+# Eclipse/STM32CubeIDE generated indexes
+.metadata/
