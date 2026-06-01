@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "battery_monitor.h"
 #include "pwm/pwm_control.h"
+#include "balancer_controller.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -116,10 +117,10 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  // START PWM ON PE8 AND PE9
-  PWM_Start();              // Starts TIM1_CH1 and TIM1_CH1N
-  PWM_SetDutyPercent(50);   // 50% duty cycle
-
+  /* Initialize the mock-based balancing controller.
+   * The controller will decide when to start or stop PWM.
+   */
+  BalancerController_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,10 +129,12 @@ int main(void)
   {
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
-    /*
-     * Nothing needed here for continuous PWM.
-     * TIM1 generates the PWM in hardware.
+    /* Mock voltage balancing logic.
+     * For now, this uses two fixed voltage values instead of ADC readings.
      */
+    BalancerController_Update();
+
+    HAL_Delay(100);
 
   }
   /* USER CODE END 3 */
