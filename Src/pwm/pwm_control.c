@@ -1,6 +1,7 @@
 #include "pwm/pwm_control.h"
 
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim4;
 
 /* If you wanna tickle the timer 4 that activates a led do this
 #define PWM_TIMER_HANDLE   htim4
