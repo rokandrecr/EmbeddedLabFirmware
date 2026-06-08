@@ -9,18 +9,27 @@ extern TIM_HandleTypeDef htim1;
 /* However we want to trigger a pwm on TIM1 where there is a normal output and complementary output*/
 #define PWM_TIMER_HANDLE   htim1
 #define PWM_TIMER_CHANNEL  TIM_CHANNEL_1
+#define PWM_TIMER_HANDLE2   htim4
+#define PWM_TIMER_CHANNEL2  TIM_CHANNEL_4
 
 static uint8_t pwm_led_on = 0;
 
 void PWM_Start(void)
-{
+{   
+    /* Start PWM on both timers */
     HAL_TIM_PWM_Start(&PWM_TIMER_HANDLE, PWM_TIMER_CHANNEL);
+    HAL_TIM_PWM_Start(&PWM_TIMER_HANDLE2, PWM_TIMER_CHANNEL2);
+    /* Start complementary PWM on the first timer */
     HAL_TIMEx_PWMN_Start(&PWM_TIMER_HANDLE, PWM_TIMER_CHANNEL);
+
 }
 
 void PWM_Stop(void)
-{
+{   
+    /* Stop PWM on both timers */
     HAL_TIM_PWM_Stop(&PWM_TIMER_HANDLE, PWM_TIMER_CHANNEL);
+    HAL_TIM_PWM_Stop(&PWM_TIMER_HANDLE2, PWM_TIMER_CHANNEL2);
+
 }
 
 void PWM_SetDutyRaw(uint32_t pulse)
