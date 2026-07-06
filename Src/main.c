@@ -117,9 +117,10 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  /* Initialize the mock-based balancing controller.
+  /*
    * The controller will decide when to start or stop PWM.
    */
+  BatteryMonitor_Init(&hadc1);
   BalancerController_Init();
   /* USER CODE END 2 */
 

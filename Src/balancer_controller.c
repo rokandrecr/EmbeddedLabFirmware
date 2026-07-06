@@ -1,4 +1,5 @@
 #include "balancer_controller.h"
+#include "battery_monitor.h"
 #include "pwm/pwm_control.h"
 #include "main.h"
 
@@ -24,6 +25,12 @@
 static BalancerStatus_t balancer_status = {0};
 static uint8_t pwm_is_running = 0U;
 
+static float absolute_float(float value);
+static void BalancerController_ReadMockVoltages(float *cell1, float *cell2);
+static void BalancerController_ReadBatteryVoltages(float *cell1, float *cell2);
+static void BalancerController_EnableBalancing(void);
+static void BalancerController_DisableBalancing(void);
+
 // Only work with abs values
 static float absolute_float(float value)
 {
@@ -35,7 +42,7 @@ static float absolute_float(float value)
     return value;
 }
 
-/* Later this function can be replaced by real ADC voltage readings. */
+/* Function to try logic with only mocked values*/
 static void BalancerController_ReadMockVoltages(float *cell1, float *cell2)
 {
     if ((cell1 == NULL) || (cell2 == NULL))
@@ -46,6 +53,27 @@ static void BalancerController_ReadMockVoltages(float *cell1, float *cell2)
     *cell1 = MOCK_CELL1_VOLTAGE_V;
     *cell2 = MOCK_CELL2_VOLTAGE_V;
 }
+
+/* Logic to read actual battery voltages */
+static void BalancerController_ReadBatteryVoltages(float *cell1, float *cell2)
+{
+    BatteryReadings_t readings;
+
+    BatteryMonitor_Update();
+    readings = BatteryMonitor_GetReadings();
+    // Use this line to debug the obtained values
+    if (readings.valid == 0U)
+    {
+        *cell1 = 0.0f;
+        *cell2 = 0.0f;
+        BalancerController_DisableBalancing();
+        return;
+    }
+
+    *cell1 = readings.cell1_voltage;
+    *cell2 = readings.cell2_voltage;
+}
+
 
 /* Enable balancing by starting PWM with the defined duty cycle. */
 static void BalancerController_EnableBalancing(void)
@@ -91,9 +119,12 @@ void BalancerController_Update(void)
     float cell1 = 0.0f;
     float cell2 = 0.0f;
     float difference = 0.0f;
-
-    BalancerController_ReadMockVoltages(&cell1, &cell2);
-
+    
+    // Leave this line in case I wanna try just the logic with mocked values
+    //BalancerController_ReadMockVoltages(&cell1, &cell2);
+    BalancerController_ReadBatteryVoltages(&cell1, &cell2);
+    
+    // Get the difference between two cell voltages. This could change if it wants to scalate
     difference = absolute_float(cell1 - cell2);
 
     balancer_status.cell1_voltage = cell1;
