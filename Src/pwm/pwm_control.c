@@ -38,12 +38,12 @@ void PWM_SetDutyRaw(uint32_t pulse)
     __HAL_TIM_SET_COMPARE(&PWM_TIMER_HANDLE, PWM_TIMER_CHANNEL, pulse);
 }
 
-void PWM_SetDutyPercent(uint8_t percent)
+void PWM_SetDutyPercent(uint8_t percent, uint8_t percent2)
 {
     uint32_t arr_tim1;
     uint32_t arr_tim4;
     uint32_t pulse_tim1;
-    uint32_t pulse_tim4;
+    uint32_t pulse_tim4;    
 
     if (percent > 100)
     {
@@ -57,7 +57,7 @@ void PWM_SetDutyPercent(uint8_t percent)
 
     // TIM4 duty
     arr_tim4 = __HAL_TIM_GET_AUTORELOAD(&htim4);
-    pulse_tim4 = ((arr_tim4 + 1U) * percent) / 100U;
+    pulse_tim4 = ((arr_tim4 + 1U) * percent2) / 100U;
     __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_tim4);
 }
 
@@ -65,12 +65,12 @@ void PWM_BlinkStep(void)
 {
     if (pwm_led_on)
     {
-        PWM_SetDutyPercent(0);
+        PWM_SetDutyPercent(0, 0);
         pwm_led_on = 0;
     }
     else
     {
-        PWM_SetDutyPercent(50);
+        PWM_SetDutyPercent(60, 40);
         pwm_led_on = 1;
     }
 }

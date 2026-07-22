@@ -19,7 +19,8 @@
 #define BALANCE_THRESHOLD_V        0.50f
 
 /* PWM duty cycle used when balancing is active. */
-#define BALANCE_PWM_DUTY_PERCENT   50U
+#define BALANCE_PWM_DUTY_PERCENT   60U
+#define BALANCE_PWM_DUTY_PERCENT2  40U
 
 // Balancer Status is the structure where all the values needed for the balancing are placed
 static BalancerStatus_t balancer_status = {0};
@@ -84,7 +85,7 @@ static void BalancerController_EnableBalancing(void)
         pwm_is_running = 1U;
     }
 
-    PWM_SetDutyPercent(BALANCE_PWM_DUTY_PERCENT);
+    PWM_SetDutyPercent(BALANCE_PWM_DUTY_PERCENT, BALANCE_PWM_DUTY_PERCENT2);
     balancer_status.balancing_active = 1U;
 
     /* Optional visual feedback: red LED ON when balancing is active. */
@@ -94,7 +95,7 @@ static void BalancerController_EnableBalancing(void)
 /* Disable balancing by stopping PWM. */
 static void BalancerController_DisableBalancing(void)
 {
-    PWM_SetDutyPercent(0U);
+    PWM_SetDutyPercent(0U, 0U);
     PWM_Stop();
     pwm_is_running = 0U;
     balancer_status.balancing_active = 0U;
@@ -121,8 +122,8 @@ void BalancerController_Update(void)
     float difference = 0.0f;
     
     // Leave this line in case I wanna try just the logic with mocked values
-    //BalancerController_ReadMockVoltages(&cell1, &cell2);
-    BalancerController_ReadBatteryVoltages(&cell1, &cell2);
+    BalancerController_ReadMockVoltages(&cell1, &cell2);
+    //BalancerController_ReadBatteryVoltages(&cell1, &cell2);
     
     // Get the difference between two cell voltages. This could change if it wants to scalate
     difference = absolute_float(cell1 - cell2);
