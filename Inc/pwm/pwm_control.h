@@ -11,7 +11,7 @@
 void PWM_Start(void);
 void PWM_Stop(void);
 void PWM_SetDutyRaw(uint32_t pulse);
-void PWM_SetDutyPercent(uint8_t percent);
+void PWM_SetDutyPercent(uint8_t percent, uint8_t percent2);
 void PWM_BlinkStep(void);
 
 #endif /* PWM_CONTROL_H */
